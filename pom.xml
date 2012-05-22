@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.m6d</groupId>
+  <artifactId>hive-geoip</artifactId>
+  <name>hive-geoip</name>
+  <version>1.0.0-SNAPSHOT</version>
+  <description>GeoIP in hive</description>
+  <packaging>jar</packaging>
+
+  <properties></properties>
+  <dependencies>
+
+    <dependency>
+      <groupId>org.kohsuke</groupId>
+      <artifactId>geoip</artifactId>
+      <version>1.2.5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.jointhegrid</groupId>
+      <artifactId>hive_test</artifactId>
+      <version>4.0.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-core</artifactId>
+      <version>0.20.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-test</artifactId>
+      <version>0.20.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.7</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+
+        <plugin>
+          <configuration>
+            <serverId>apache-main</serverId>
+            <url>http://www.apache.org/dist/hadoop/common/hadoop-0.20.2</url>
+            <fromFile>hadoop-0.20.2.tar.gz</fromFile>
+            <toDir>${project.build.directory}/hadoop</toDir>
+          </configuration>
+
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>wagon-maven-plugin</artifactId>
+          <version>1.0-beta-3</version>
+          <executions>
+            <execution>
+              <id>download-hadoop</id>
+              <phase>pre-integration-test</phase>
+              <goals>
+                <goal>download-single</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.2.1</version>
+          <configuration>
+            <executable>tar</executable>
+            <arguments>
+              <argument>-xf</argument>
+              <argument>${project.build.directory}/hadoop/hadoop-0.20.2.tar.gz</argument>
+              <argument>-C</argument>
+              <argument>${project.build.directory}</argument>
+            </arguments>
+          </configuration>
+        </plugin>
+
+
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <version>2.5.1</version>
+          <configuration>
+            <projectNameTemplate>[artifactId]</projectNameTemplate>
+            <wtpmanifest>true</wtpmanifest>
+            <wtpapplicationxml>true</wtpapplicationxml>
+            <wtpversion>1.5</wtpversion>
+            <additionalBuildcommands>
+              <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>
+              <buildcommand>org.maven.ide.eclipse.maven2Builder</buildcommand>
+            </additionalBuildcommands>
+            <additionalProjectnatures>
+              <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+              <projectnature>org.maven.ide.eclipse.maven2Nature</projectnature>
+            </additionalProjectnatures>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.6</source>
+            <target>1.6</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
